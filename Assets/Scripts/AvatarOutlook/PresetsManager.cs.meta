@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 22dd8adab0a09cf4e85d98534f7b5b3a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - presetButtonPrefab: {instanceID: 0}
+  - albedoBlank: {fileID: 2800000, guid: 79eca95232a5c09439fd0e9760f1158e, type: 3}
+  - thumbnailBlank: {fileID: 2800000, guid: d8708870dda313848a5b5ca39321672b, type: 3}
+  - snapshooter: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
