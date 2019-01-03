@@ -54,11 +54,16 @@ public class P3D_MouseLook : MonoBehaviour
 
 	public float currentYaw;
 
+    private Vector3 point, axis;
+
+
 	protected virtual void Awake()
 	{
 		currentPitch = TargetPitch;
 		currentYaw   = TargetYaw;
-	}
+        point = new Vector3(1.9f,1.3f, 10);
+        axis = new Vector3(0, 1, 0);
+    }
 
 	protected virtual void Update()
 	{
@@ -84,7 +89,7 @@ public class P3D_MouseLook : MonoBehaviour
 		// Move current rotation toward the target position
 		currentPitch = P3D_Helper.Dampen(currentPitch, TargetPitch, Acceleration, Time.deltaTime);
 		currentYaw   = P3D_Helper.Dampen(currentYaw  , TargetYaw  , Acceleration, Time.deltaTime);
-		
-		transform.localRotation = Quaternion.Euler(currentPitch, currentYaw, 0.0f);
+
+        transform.localRotation = Quaternion.Euler(currentPitch, currentYaw, 0.0f);
 	}
 }

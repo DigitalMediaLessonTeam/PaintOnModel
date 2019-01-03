@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using System.IO;
 //防UI穿透，新加
 using UnityEngine.EventSystems;
@@ -113,9 +114,13 @@ public class PaintManager : MonoBehaviour {
     private uint lastCanvasUpateCount = 1;
     private Texture2D lastCanvas;
 
+    private Bokjan.LeapMotionManager lmm;
+
     // Use this for initialization
     void Start()
     {
+        lmm = new Bokjan.LeapMotionManager();
+
         if (mainCamera == null) { mainCamera = Camera.main; }
         albedoPath = PresetsManager.rootPath + "/" + PresetsManager.currentPresetIndex + "/albedo.png";
         albedoWidth = albedoHeight = 512;
@@ -395,4 +400,235 @@ public class PaintManager : MonoBehaviour {
         //Cursor.SetCursor(cursor_brush, new Vector2(cursor_brush.width / 2, cursor_brush.height / 2), CursorMode.Auto);
     }
      */
+}
+
+namespace Bokjan
+{
+    public class LeapMotionManager : IDisposable
+    {
+        private FrameProcessor fp = null;
+        private Leap.Controller controller;
+
+        public static float axisX;
+        public static float AxisX
+        {
+            get
+            {
+                if (axisX > -0.5 && axisX < 0.5)
+                    return 0;
+                else if (axisX > 0.5)
+                    return 0.1f;
+                return -0.1f;
+            }
+            set
+            {
+                axisX = value;
+            }
+        }
+
+        public LeapMotionManager()
+        {
+            Debug.LogError("LMM constructed");
+            controller = new Leap.Controller();
+            LeapMotionListener listener = new LeapMotionListener(controller);
+            controller.Connect += listener.OnServiceConnect;
+            controller.Device += listener.OnConnect;
+            controller.FrameReady += listener.OnFrame;
+        }
+        
+        public void Dispose()
+        {
+            controller.Dispose();
+        }
+
+        public void OnFrame(object sender, Leap.Frame frame)
+        {
+            if (fp == null)
+            {
+                fp = new FrameProcessor(controller.Devices[0].Range);
+                Debug.LogFormat("Device range: {0} (mm)", controller.Devices[0].Range);
+            }
+            fp.Process(frame);
+        }
+
+    }
+
+    class LeapMotionListener
+    {
+        private FrameProcessor fp = null;
+        private Leap.Controller controller = null;
+        public LeapMotionListener(Leap.Controller c)
+        {
+            controller = c;
+        }
+        public void OnServiceConnect(object sender, Leap.ConnectionEventArgs args)
+        {
+            Debug.Log("Service Connected");
+        }
+        public void OnConnect(object sender, Leap.DeviceEventArgs args)
+        {
+            Debug.LogError("Connected");
+        }
+        public void OnFrame(object sender, Leap.FrameEventArgs args)
+        {
+            Leap.Frame frame = args.frame;
+            if (frame.Hands.Count == 0 || frame.Hands.Count > 2)
+                return;
+            if (fp == null)
+            {
+                fp = new FrameProcessor(controller.Devices[0].Range);
+                Debug.LogFormat("Device range: {0} (mm)", controller.Devices[0].Range);
+            }
+            fp.Process(frame);
+        }
+    }
+
+    class FrameProcessor
+    {
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int nIndex);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int SetCursorPos(int x, int y);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
+        const int MOUSEEVENTF_MOVE = 0x0001;
+        const int MOUSEEVENTF_LEFTDOWN = 0x0002;
+        const int MOUSEEVENTF_LEFTUP = 0x0004;
+        const int MOUSEEVENTF_RIGHTDOWN = 0x0008;
+        const int MOUSEEVENTF_RIGHTUP = 0x0010;
+        const int MOUSEEVENTF_MIDDLEDOWN = 0x0020;
+        const int MOUSEEVENTF_MIDDLEUP = 0x0040;
+        const int MOUSEEVENTF_ABSOLUTE = 0x8000;
+        const byte KeyW = 87;
+        const byte KeyA = 65;
+        const byte KeyS = 83;
+        const byte KeyD = 68;
+
+        private float InteractionRange;
+        private int ScreenWidth, ScreenHeight;
+        private float PinchThreshold = 0.9f;
+        private bool IsLeftMouseDown = false;
+
+        public FrameProcessor(float range)
+        {
+            InteractionRange = range * 0.3f;
+            ScreenWidth = GetSystemMetrics(0);  // SM_CXSCREEN
+            ScreenHeight = GetSystemMetrics(1); // SM_CYSCREEN
+            Debug.LogFormat("Screen size: width {0}, height {1}", ScreenWidth, ScreenHeight);
+        }
+
+        public void Process(Leap.Frame frame)
+        {
+            bool IsLeftHandDetected = false;
+            foreach (Leap.Hand hand in frame.Hands)
+            {
+                if (hand.IsLeft)
+                {
+                    IsLeftHandDetected = true;
+                    ProcessLeft(hand);
+                }
+                else
+                {
+                    ProcessRight(hand);
+                }
+            }
+            if (!IsLeftHandDetected)
+                LeapMotionManager.AxisX = 0;
+        }
+
+        private void ProcessLeft(Leap.Hand hand)
+        {
+            Leap.Vector normal = hand.PalmNormal.Normalized;
+            //Debug.LogFormat("normal: {0}", normal);
+            LeapMotionManager.AxisX = normal.x;
+            if (hand.PinchStrength> PinchThreshold && !IsLeftMouseDown)
+            {
+                IsLeftMouseDown = true;
+                // Debug.LogFormat("Grab strength: {0}, mouse down", hand.GrabStrength);
+                mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+            }
+            else if (hand.PinchStrength < PinchThreshold && IsLeftMouseDown)
+            {
+                IsLeftMouseDown = false;
+                // Debug.LogFormat("Grab strength: {0}, mouse up", hand.GrabStrength);
+                mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+            }
+        }
+
+        private void ProcessRight(Leap.Hand hand)
+        {
+            Leap.Vector position = Relative3DPosition(hand.PalmPosition);
+            int x = (int)(position.x * ScreenWidth);
+            int y = (int)(position.y * ScreenHeight);
+            SetCursorPos(x, y);
+        }
+
+        private Leap.Vector Relative3DPosition(Leap.Vector position)
+        {
+            Leap.Vector normalized = NormalizePoint2D(position);
+            float x = normalized.x;
+            float y = normalized.y;
+            // clamp
+            if (x < 0)
+                x = 0;
+            if (x > 1)
+                x = 1;
+            if (y < 0)
+                y = 0;
+            if (y > 1)
+                y = 1;
+            return new Leap.Vector(x, y, 0);
+        }
+
+        private Leap.Vector NormalizePoint2D(Leap.Vector v)
+        {
+            // float x = (v.x + InteractionRange) / (InteractionRange * 2.0f);
+            // 只留下右手部分区域操作x轴
+            float x = 0;
+            if (v.x > 0)
+            {
+                x = v.x / InteractionRange;
+            }
+            // float y = (v.z + InteractionRange) / (InteractionRange * 2.0f); // 坑
+            // y轴也缩小操作范围
+            float y = (v.z + InteractionRange) / (InteractionRange * 2.0f);
+            if (y > 0.25 && y <= 0.75)
+            {
+                y = (y - 0.25f) * 2;
+            }
+            else if (y <= 0.25)
+            {
+                y = 0;
+            }
+            else
+            {
+                y = 1;
+            }
+            return new Leap.Vector(x, y, 0);
+        }
+
+        private void PressAndReleaseKeyboardKey(byte key)
+        {
+            if (key == 0x0)
+                return;
+            keybd_event(key, 0, 0, 0);
+            keybd_event(key, 0, 2, 0);
+        }
+
+        private void PressKeyboardKey(byte key)
+        {
+            if (key == 0x0)
+                return;
+            keybd_event(key, 0, 0, 0);
+        }
+
+        private void ReleaseKeyboardKey(byte key)
+        {
+            if (key == 0x0)
+                return;
+            keybd_event(key, 0, 2, 0);
+        }
+    }
 }

@@ -1113,6 +1113,7 @@ GameObject:
   - component: {fileID: 485293846}
   - component: {fileID: 485293850}
   - component: {fileID: 485293849}
+  - component: {fileID: 485293852}
   - component: {fileID: 485293851}
   m_Layer: 0
   m_Name: Main Camera
@@ -1222,6 +1223,24 @@ Skybox:
   m_GameObject: {fileID: 485293845}
   m_Enabled: 1
   m_CustomSkybox: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+--- !u!114 &485293852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 485293845}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7224e6462399fbc47b6c99b8610dcce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Requires: 324
+  Sensitivity: 2
+  Acceleration: 10
+  TargetPitch: 0
+  TargetYaw: 0
+  currentPitch: 0
+  currentYaw: 0
 --- !u!1 &504357618
 GameObject:
   m_ObjectHideFlags: 0
@@ -3632,7 +3651,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -600, y: 100}
-  m_SizeDelta: {x: 1200, y: 200}
+  m_SizeDelta: {x: 1200, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1927043749
 MonoBehaviour:
@@ -3666,10 +3685,12 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "WASD/Arrows:\u79FB\u52A8\u89C6\u89D2  \u9F20\u6807\u53F3\u952E\u62D6\u62FD:\u65CB\u8F6C\u89C6\u89D2
-    \ \u9F20\u6807\u5DE6\u952E:\u7ED8\u753B  \u9F20\u6807\u4E2D\u952E\u70B9\u51FB:\u5438\u8272
-    \ \n\nE:\u6A61\u76AE\u64E6\u6A21\u5F0F\u5F00\u5173  shift+\u9F20\u6807\u5DE6\u952E\u70B9\u51FB:\u753B\u76F4\u7EBF
-    \ ctrl+Z:\u64A4\u9500\u4E00\u7B14  ctrl+shift+Z:\u91CD\u505A\u4E00\u7B14\n\nctrl+\u9F20\u6807\u6EDA\u8F6E(\u4E0A+\u4E0B-):\u7F29\u653E\u7B14\u5237
+  m_Text: "LeapMotion\uFF1A\u53F3\u624B\u79FB\u52A8\u5149\u6807  \u5DE6\u624B\u634F\u4E00\u4E0B\u70B9\u51FB\uFF0C\u957F\u634F\u89C6\u4E3A\u6441\u4F4F
+    \ \u5DE6\u624B\u5DE6\u53F3\u65CB\u8F6C\u4EE5\u65CB\u8F6C\u6A21\u578B\n\n\u952E\u9F20\uFF1AWASD/Arrows:\u79FB\u52A8\u89C6\u89D2
+    \ \u9F20\u6807\u53F3\u952E\u62D6\u62FD:\u65CB\u8F6C\u89C6\u89D2  \u9F20\u6807\u5DE6\u952E:\u7ED8\u753B
+    \ \u9F20\u6807\u4E2D\u952E\u70B9\u51FB:\u5438\u8272  \n\nE:\u6A61\u76AE\u64E6\u6A21\u5F0F\u5F00\u5173
+    \ shift+\u9F20\u6807\u5DE6\u952E\u70B9\u51FB:\u753B\u76F4\u7EBF  ctrl+Z:\u64A4\u9500\u4E00\u7B14
+    \ ctrl+shift+Z:\u91CD\u505A\u4E00\u7B14\n\nctrl+\u9F20\u6807\u6EDA\u8F6E(\u4E0A+\u4E0B-):\u7F29\u653E\u7B14\u5237
     \ alt+\u9F20\u6807\u6EDA\u8F6E(\u4E0A+\u4E0B-):\u6539\u53D8\u7B14\u5237\u900F\u660E\u5EA6
     \ (\u64A4\u9500\u4E0A\u965010\u6B65)"
 --- !u!222 &1927043750

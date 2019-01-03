@@ -20,6 +20,14 @@ public class ButtonScripts : MonoBehaviour {
     /// <summary>
     /// for buttons in scene "PresetsGallery"
     /// </summary>
+    public void ExitOnClick()
+    {
+        //StartCoroutine(ExitPresetsGallery());
+        //PresetsManager.currentPresetIndex = -1;
+        print("exit the program");
+        Application.Quit();
+    }
+
     public void CancelChoiceOnClick()
     {
         StartCoroutine(ExitPresetsGallery());

@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{32D62E89-D9BA-BFA5-1EF1-B367C6CC35F1}</ProjectGuid>
+    <ProjectGuid>{8F65A1F2-E505-5296-AD71-70C4488A1DF6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -62,22 +62,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\AvatarOutlook\ButtonScripts.cs" />
+    <Compile Include="Assets\Scripts\AvatarOutlook\LeapMotionCameraControl.cs" />
     <Compile Include="Assets\Scripts\AvatarOutlook\LoadTexture.cs" />
     <Compile Include="Assets\Scripts\AvatarOutlook\PaintManager.cs" />
     <Compile Include="Assets\Scripts\AvatarOutlook\PresetsManager.cs" />
     <Compile Include="Assets\Scripts\AvatarOutlook\RotateModel.cs" />
     <Compile Include="Assets\Scripts\AvatarOutlook\SetCursorOnUI.cs" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>F:/Program_Files/Unity Projects/3Dpaint/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>E:/Program_Files/Unity Projects/Lab4/PaintOnModel/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>F:/Program_Files/Unity Projects/3Dpaint/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>E:/Program_Files/Unity Projects/Lab4/PaintOnModel/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>F:/Program_Files/Unity Projects/3Dpaint/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>E:/Program_Files/Unity Projects/Lab4/PaintOnModel/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>F:/Program_Files/Unity Projects/3Dpaint/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>E:/Program_Files/Unity Projects/Lab4/PaintOnModel/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>E:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -278,7 +279,7 @@
       <HintPath>E:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="LitJson">
-      <HintPath>F:/Program_Files/Unity Projects/3Dpaint/Assets/Plugins/LitJson.dll</HintPath>
+      <HintPath>E:/Program_Files/Unity Projects/Lab4/PaintOnModel/Assets/Plugins/LitJson.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
       <HintPath>C:/Users/HP/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>
@@ -316,7 +317,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{1147641B-045A-6159-E277-57FCFE403A76}</Project>
+      <Project>{C35D6878-0167-4289-0597-53EC98A519F9}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
   </ItemGroup>

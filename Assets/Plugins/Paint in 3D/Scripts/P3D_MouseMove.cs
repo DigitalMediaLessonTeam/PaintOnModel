@@ -74,6 +74,6 @@ public class P3D_MouseMove : MonoBehaviour
          */
 
         // Move current position toward the target position
-        transform.position = P3D_Helper.Dampen3(transform.position, targetPosition, Acceleration, Time.deltaTime, 0.1f);
+        //transform.position = P3D_Helper.Dampen3(transform.position, targetPosition, Acceleration, Time.deltaTime, 0.1f);
 	}
 }
